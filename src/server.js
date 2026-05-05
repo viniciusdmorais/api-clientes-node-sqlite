@@ -1,15 +1,20 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-
 const clienteRoutes = require('./routes/clienteRoutes');
+const swaggerSpec = require('./swagger');
+
+app.use(express.json());
 
 app.use('/', clienteRoutes);
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.get('/', (req, res) => {
-    res.send('🚀 API rodando!');
+    res.send('🚀 API rodando! Acesse a documentação em /api-docs');
 });
 
 app.listen(PORT, () => {
