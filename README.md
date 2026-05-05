@@ -46,3 +46,10 @@ api-clientes-node-sqlite/
 ├── package.json
 ├── package-lock.json
 └── README.md
+```
+
+## 🌐 API Online
+
+Acesse a API em produção:
+
+https://api-clientes-node-sqlite.onrender.com/clientes
