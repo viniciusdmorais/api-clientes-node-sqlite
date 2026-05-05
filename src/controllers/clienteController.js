@@ -2,12 +2,38 @@ const db = require('../database/database');
 
 exports.listarClientes = (req, res) => {
     try {
+        const { id, nome } = req.query;
+
+        let sql = "SELECT * FROM clientes WHERE 1 = 1";
+        const params = [];
+
+        if (id) {
+            sql += " AND id = ?";
+            params.push(id);
+        }
+
+        if (nome) {
+            sql += " AND nome LIKE ?";
+            params.push(`%${nome}%`);
+        }
+
+        const clientes = db.prepare(sql).all(...params);
+
+        res.json(clientes);
+
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
+};
+
+/*exports.listarClientes = (req, res) => {
+    try {
         const clientes = db.prepare("SELECT * FROM clientes").all();
         res.json(clientes);
     } catch (err) {
         res.status(500).json({ erro: err.message });
     }
-};
+};*/
 
 exports.buscarCliente = (req, res) => {
     try {
