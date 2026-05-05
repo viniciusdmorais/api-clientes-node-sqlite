@@ -1,33 +1,60 @@
 # 🚀 API REST de Clientes com Node.js, Express e SQLite
 
-API REST desenvolvida com Node.js, Express e SQLite para gerenciamento de clientes, utilizando uma estrutura organizada em camadas com rotas, controllers e banco de dados.
+API REST desenvolvida com **Node.js, Express e SQLite** para gerenciamento de clientes, seguindo uma arquitetura organizada em camadas (**Routes, Controllers e Database**).
+
+---
+
+## 🌐 API Online
+
+🔗 Produção:  
+https://api-clientes-node-sqlite.onrender.com/clientes  
+
+📘 Documentação Swagger:  
+https://api-clientes-node-sqlite.onrender.com/api-docs  
 
 ---
 
 ## 📌 Funcionalidades
 
-- ✔ Listar clientes  
+- ✔ Listar todos os clientes  
 - ✔ Buscar cliente por ID  
-- ✔ Criar cliente  
+- ✔ Criar novo cliente  
 - ✔ Atualizar cliente  
 - ✔ Deletar cliente  
-- ✔ Validação de campos obrigatórios  
-- ✔ Persistência de dados com SQLite  
+- ✔ Validação de dados obrigatórios  
+- ✔ Persistência com banco SQLite  
+- ✔ Documentação interativa com Swagger  
 
 ---
 
-## 🛠️ Tecnologias utilizadas
+## 🧪 Testando a API
 
-- Node.js  
-- Express  
-- SQLite  
-- Postman  
+Você pode testar de duas formas:
 
----
+### 👉 Swagger (recomendado)
+Acesse:
 
-## 📁 Estrutura do projeto
+/api-docs
 
-```bash
+
+### 👉 Exemplo de requisição (POST)
+
+```json
+{
+  "nome": "João Silva",
+  "cidade": "Ribeirão Preto"
+}
+```
+
+### 🛠️ Tecnologias utilizadas
+Node.js
+Express
+SQLite
+Swagger (OpenAPI)
+Postman
+
+### 📁 Estrutura do projeto
+```
 api-clientes-node-sqlite/
 │
 ├── src/
@@ -40,16 +67,51 @@ api-clientes-node-sqlite/
 │   ├── routes/
 │   │   └── clienteRoutes.js
 │   │
+│   ├── swagger.js
 │   └── server.js
 │
+├── database.db
 ├── .gitignore
 ├── package.json
 ├── package-lock.json
 └── README.md
 ```
+### ⚙️ Como rodar o projeto localmente
 
-## 🌐 API Online
+# Clonar o repositório
+```
+git clone https://github.com/seu-usuario/api-clientes-node-sqlite.git
+```
+# Acessar a pasta
+```
+cd api-clientes-node-sqlite
+```
+# Instalar dependências
+```
+npm install
+```
+# Rodar o servidor
+```
+node src/server.js
+```
+### Servidor rodando em:
+```
+http://localhost:3000
+```
+### Swagger:
+```
+http://localhost:3000/api-docs
+```
+### 📌 Possíveis melhorias futuras
+🔐 Autenticação com JWT
+📦 Validação com Joi ou Zod
+🧱 Separação por services
+🐳 Dockerização
+☁️ Deploy automatizado
 
-Acesse a API em produção:
+### 👨‍💻 Autor
+Desenvolvido por Vinícius Morais
+🔗 LinkedIn: https://www.linkedin.com/in/viniciusdemoraismendes
+🔗 GitHub: https://github.com/viniciusdmorais
 
-https://api-clientes-node-sqlite.onrender.com/clientes
+
