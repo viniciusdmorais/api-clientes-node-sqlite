@@ -1,99 +1,99 @@
 const db = require('../database/database');
 
 exports.listarClientes = (req, res) => {
-    db.all("SELECT * FROM clientes", [], (err, rows) => {
-        if (err) {
-            return res.status(500).json({ erro: err.message });
-        }
-        res.json(rows);
-    });
+    try {
+        const clientes = db.prepare("SELECT * FROM clientes").all();
+        res.json(clientes);
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
 };
 
 exports.buscarCliente = (req, res) => {
-    const id = req.params.id;
+    try {
+        const id = req.params.id;
 
-    db.get("SELECT * FROM clientes WHERE id = ?", [id], (err, row) => {
-        if (err) {
-            return res.status(500).json({ erro: err.message });
-        }
+        const cliente = db
+            .prepare("SELECT * FROM clientes WHERE id = ?")
+            .get(id);
 
-        if (!row) {
+        if (!cliente) {
             return res.status(404).json({ mensagem: "Cliente não encontrado" });
         }
 
-        res.json(row);
-    });
+        res.json(cliente);
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
 };
 
 exports.criarCliente = (req, res) => {
-    const { nome, cidade } = req.body;
+    try {
+        const { nome, cidade } = req.body;
 
-    if (!nome || !cidade) {
-        return res.status(400).json({
-            mensagem: "Nome e cidade são obrigatórios"
-        });
-    }
-
-    db.run(
-        "INSERT INTO clientes (nome, cidade) VALUES (?, ?)",
-        [nome, cidade],
-        function (err) {
-            if (err) {
-                return res.status(500).json({ erro: err.message });
-            }
-
-            res.status(201).json({
-                id: this.lastID,
-                nome,
-                cidade
+        if (!nome || !cidade) {
+            return res.status(400).json({
+                mensagem: "Nome e cidade são obrigatórios"
             });
         }
-    );
+
+        const result = db
+            .prepare("INSERT INTO clientes (nome, cidade) VALUES (?, ?)")
+            .run(nome, cidade);
+
+        res.status(201).json({
+            id: result.lastInsertRowid,
+            nome,
+            cidade
+        });
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
 };
 
 exports.atualizarCliente = (req, res) => {
-    const id = req.params.id;
-    const { nome, cidade } = req.body;
+    try {
+        const id = req.params.id;
+        const { nome, cidade } = req.body;
 
-    if (!nome || !cidade) {
-        return res.status(400).json({
-            mensagem: "Nome e cidade são obrigatórios"
-        });
-    }
-    
-    db.run(
-        "UPDATE clientes SET nome = ?, cidade = ? WHERE id = ?",
-        [nome, cidade, id],
-        function (err) {
-            if (err) {
-                return res.status(500).json({ erro: err.message });
-            }
-
-            if (this.changes === 0) {
-                return res.status(404).json({ mensagem: "Cliente não encontrado" });
-            }
-
-            res.json({ id, nome, cidade });
+        if (!nome || !cidade) {
+            return res.status(400).json({
+                mensagem: "Nome e cidade são obrigatórios"
+            });
         }
-    );
+
+        const result = db
+            .prepare("UPDATE clientes SET nome = ?, cidade = ? WHERE id = ?")
+            .run(nome, cidade, id);
+
+        if (result.changes === 0) {
+            return res.status(404).json({ mensagem: "Cliente não encontrado" });
+        }
+
+        res.json({
+            id: Number(id),
+            nome,
+            cidade
+        });
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
 };
 
 exports.deletarCliente = (req, res) => {
-    const id = req.params.id;
+    try {
+        const id = req.params.id;
 
-    db.run(
-        "DELETE FROM clientes WHERE id = ?",
-        [id],
-        function (err) {
-            if (err) {
-                return res.status(500).json({ erro: err.message });
-            }
+        const result = db
+            .prepare("DELETE FROM clientes WHERE id = ?")
+            .run(id);
 
-            if (this.changes === 0) {
-                return res.status(404).json({ mensagem: "Cliente não encontrado" });
-            }
-
-            res.json({ mensagem: "Cliente removido com sucesso" });
+        if (result.changes === 0) {
+            return res.status(404).json({ mensagem: "Cliente não encontrado" });
         }
-    );
+
+        res.json({ mensagem: "Cliente removido com sucesso" });
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
 };
