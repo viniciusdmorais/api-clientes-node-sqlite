@@ -111,7 +111,8 @@ http://localhost:3000/api-docs
 
 ### 👨‍💻 Autor
 Desenvolvido por Vinícius Morais
+```
 🔗 LinkedIn: https://www.linkedin.com/in/viniciusdemoraismendes
 🔗 GitHub: https://github.com/viniciusdmorais
-
+```
 
